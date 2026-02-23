@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.Events;
 
 public class TutorialManager : MonoBehaviour
 {
@@ -17,6 +18,9 @@ public class TutorialManager : MonoBehaviour
     private int triggersCompleted = 0;
     private bool teleport1Completed = false;
     private bool teleport2Completed = false;
+
+    public bool IsMovementTutorialComplete { get; private set; }
+    public UnityEvent MovementTutorialCompleted;
 
     private void Start()
     {
@@ -41,6 +45,8 @@ public class TutorialManager : MonoBehaviour
         {
             Debug.LogWarning("Dismiss button not assigned in TutorialManager!");
         }
+
+        IsMovementTutorialComplete = false;
     }
 
     public void OnTriggerZoneEntered(int zoneNumber)
@@ -82,6 +88,8 @@ public class TutorialManager : MonoBehaviour
         {
             teleport2Completed = true;
             teleportArea2.SetActive(false);
+            IsMovementTutorialComplete = true;
+            MovementTutorialCompleted?.Invoke();
             ShowCongratsMessage();
             Debug.Log("Tutorial completed!");
         }
